@@ -1,8 +1,11 @@
+# install pillow,pypdf,pypdfium2,pytesseract
 from tkinter import messagebox
 from tkinter.filedialog import askopenfile
 import os
 import PyPDF2
 import pypdfium2 as pdfium
+import PIL.Image
+from pytesseract import pytesseract
 from tkinter import *
 
 te=Tk()
@@ -27,12 +30,24 @@ def open_pdf():
     pdf = pdfium.PdfDocument(file)
     fileinfo=PyPDF2.PdfFileReader.getDocumentInfo(readpdf)
 
-    author = fileinfo.author
-    creator = fileinfo.creator
-    producer = fileinfo.producer
     title = fileinfo.title
     number_of_pages = len(pdf)
-    op=Toplevel(te)
+
+    def extract_file():
+        text = ""
+        for i in range(extp):
+            page = pdf.get_page(i)
+            textpage = page.get_textpage()
+            text += textpage.get_text()
+            text += "\n"
+            [g.close() for g in (textpage, page)]
+        pdf.close()
+        with open(f"{title}.txt","w",encoding='utf-8') as f:
+            f.write(text)
+        text_file=(f"{title}.txt")
+        messagebox.showinfo('INFO',f'Your File has been saved at location: {os.path.abspath(text_file)}') 
+
+    op=Tk()
     op.title("Text Extractor")
     op.geometry('500x500')
     op.resizable(0,0)
@@ -44,25 +59,25 @@ def open_pdf():
     label_title=Label(frame1,text='Title',width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
     label_title.place(x=30,y=30)
     entry_title=Label(frame1,text='NOT AVAILABLE',width=35,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1,justify='left')
-    entry_title.configure(text=title)
+    entry_title.configure(text=fileinfo.title)
     entry_title.place(x=190,y=30)
 
     label_author=Label(frame1,text='Author',width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
     label_author.place(x=30,y=60)
     entry_author=Label(frame1,text='NOT AVAILABLE',width=35,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
-    entry_author.configure(text=author)
+    entry_author.configure(text=fileinfo.author)
     entry_author.place(x=190,y=60)
 
     label_creator=Label(frame1,text='Creator',width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
     label_creator.place(x=30,y=90)
     entry_creator=Label(frame1,text='NOT AVAILABLE',width=35,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
-    entry_creator.configure(text=creator)
+    entry_creator.configure(text=fileinfo.creator)
     entry_creator.place(x=190,y=90)
 
     label_producer=Label(frame1,text='Producer',width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
     label_producer.place(x=30,y=120)
     entry_producer=Label(frame1,text='NOT AVAILABLE',width=35,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
-    entry_producer.configure(text=producer)
+    entry_producer.configure(text=fileinfo.producer)
     entry_producer.place(x=190,y=120)
 
     label_nop=Label(frame1,text='Number of pages',width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
@@ -84,20 +99,62 @@ def open_pdf():
     done=Button(frame2,text="Start Extraction",fg='white',width=30,height=3,bd=2,bg='black',highlightcolor='white',highlightthickness=3,cursor='hand2',command=lambda: extract_file())
     done.place(x=90,y=60)
     extp=int(entry_nop.get())
-    def extract_file():
-        text = ""
-        for i in range(extp):
-            page = pdf.get_page(i)
-            textpage = page.get_textpage()
-            text += textpage.get_text()
-            text += "\n"
-            [g.close() for g in (textpage, page)]
-        pdf.close()
-        with open(f"{title}.txt","w",encoding='utf-8') as f:
-            f.write(text)
-        text_file=(f"{title}.txt")
-        messagebox.showinfo('INFO',f'Your File has been saved at location: {os.path.abspath(text_file)}') 
+
     op.mainloop()
 
+def open_image():
+    file =askopenfile(parent=te, mode='rb', filetype=[("Image file", "*.png *.jpeg *jpg")]) 
+    # Opening the image & storing it in an image object
+    path_to_tesseract = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    #Point tessaract_cmd to tessaract.exe
+    pytesseract.tesseract_cmd = path_to_tesseract
+    #Open image with PIL
+    img = PIL.Image.open(file)
+    mode=img.mode
+    def extract_image():
+        #Extract text from image
+        text = pytesseract.image_to_string(img)
+        with open(f"{img.mode}.txt","w",encoding='utf-8') as f:
+            f.write(text)
+        text_file=(f"{mode}.txt")
+        messagebox.showinfo('INFO',f'Your File has been saved at location: {os.path.abspath(text_file)}') 
+
+    oi=Tk()
+    oi.title("Text Extractor")
+    oi.geometry('500x500')
+    oi.resizable(0,0)
+    oi.config(bg="#081923",highlightcolor='white', highlightthickness=5)
+
+    frame1=LabelFrame(oi,width=450,height=450,text='DETAILS!!!',font=("Times New Roman",25,"bold"),highlightbackground='black', highlightcolor='white', highlightthickness=3)
+    frame1.place(x=20,y=20)
+
+    label_size=Label(frame1,text='Size',font=("Times New Roman",10,"bold"),width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
+    label_size.place(x=30,y=40)
+    entry_size=Label(frame1,text=img.size,font=("Times New Roman",10,"bold"),width=25,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1,justify='left')
+    entry_size.place(x=200,y=40)
+
+    label_height=Label(frame1,text='Height',font=("Times New Roman",10,"bold"),width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
+    label_height.place(x=30,y=90)
+    entry_height=Label(frame1,text=img.height,font=("Times New Roman",10,"bold"),width=25,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
+    entry_height.place(x=200,y=90)
+
+    label_width=Label(frame1,text='Width',font=("Times New Roman",10,"bold"),width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
+    label_width.place(x=30,y=140)
+    entry_width=Label(frame1,text=img.width,font=("Times New Roman",10,"bold"),width=25,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
+    entry_width.place(x=200,y=140)
+
+    label_format=Label(frame1,text='Format',font=("Times New Roman",10,"bold"),width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
+    label_format.place(x=30,y=190)
+    entry_format=Label(frame1,text=img.format,font=("Times New Roman",10,"bold"),width=25,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
+    entry_format.place(x=200,y=190)
+
+    label_mode=Label(frame1,text='Mode',font=("Times New Roman",10,"bold"),width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
+    label_mode.place(x=30,y=240)
+    display_mode=Label(frame1,text=img.mode,font=("Times New Roman",10,"bold"),width=25,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=1)
+    display_mode.place(x=200,y=240)
+
+    done=Button(frame1,text="Start Extraction",font=("Times New Roman",18,"bold"),fg='white',width=20,height=2,bd=2,bg='black',highlightcolor='white',highlightthickness=3,cursor='hand2',command=lambda: extract_image())
+    done.place(x=70,y=300)
+    oi.mainloop()
 
 te.mainloop()
