@@ -17,6 +17,7 @@ reg=Tk()
 reg.geometry("400x500")
 reg.resizable(0,0)
 reg.title("Registration Form")
+reg.configure(bg='#087587')
 
 head=Label(reg,text='Register Here!!!',fg='White',bg='black',width=15,height=1,bd=2,highlightbackground='black', highlightcolor='black', highlightthickness=1)
 head.place(x=150,y=50)
