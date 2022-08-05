@@ -12,17 +12,17 @@ te=Tk()
 te.title("Text Extractor")
 te.geometry('500x500')
 te.resizable(0,0)
-te.config(bg="#081923",highlightcolor='white', highlightthickness=5)
+te.config(bg="#4169E1",highlightcolor='white', highlightthickness=5)
 
-frame=LabelFrame(te,width=450,height=450,text='TEXT EXTRACTOR',bg='#087587',font=("Times New Roman",28,"bold"),highlightcolor='white', highlightthickness=3)
+frame=LabelFrame(te,width=450,height=450,text='TEXT EXTRACTOR',bg='#00F5FF',font=("Times New Roman",28,"bold"),highlightcolor='white', highlightthickness=3)
 frame.place(x=20,y=20)
 message=Label(frame,width=46,font=("Times New Roman",12,"bold"),text='Welcome to Text Extractor Tool...\nThe Text extractor will allow you to extract text from any\nPDF  /  IMAGE  /  WEBSITE\nYou may upload any document(.pdf,.png) or Site address \nand the tool will pull text from the image \nand will save it in a text file :)',highlightcolor='black')
 message.place(x=11,y=35)
-browse=Button(frame,text='CLICK TO SELECT PDF',font=("Segoe Script",10,"bold"),width=25,height=1,bd=2,fg='white',bg='black',activebackground='pink',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: open_pdf())
+browse=Button(frame,text='CLICK TO SELECT  PDF',font=("Latin",12,"bold"),width=23,height=1,bd=2,fg='white',bg='#8B7D7B',activebackground='pink',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: open_pdf())
 browse.place(x=95,y=180)
-browse=Button(frame,text='CLICK TO SELECT IMAGE',font=("Segoe Script",10,"bold"),width=25,height=1,bd=2,fg='white',bg='black',activebackground='pink',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: open_image())
+browse=Button(frame,text='CLICK TO SELECT  IMAGE',font=("Latin",12,"bold"),width=23,height=1,bd=2,fg='white',bg='#8B7D7B',activebackground='pink',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: open_image())
 browse.place(x=95,y=240)
-browse=Button(frame,text='CLICK TO SELECT WEBSITE',font=("Segoe Script",10,"bold"),width=25,height=1,bd=2,fg='white',bg='black',activebackground='pink',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: open_site())
+browse=Button(frame,text='CLICK TO EXIT',font=("Latin",12,"bold"),width=23,height=1,bd=2,fg='white',bg='#8B7D7B',activebackground='pink',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: te.destroy())
 browse.place(x=95,y=300)
 def open_pdf():
     file = askopenfile(parent=te, mode='rb', filetype=[("Pdf file", "*.pdf")])
@@ -42,18 +42,19 @@ def open_pdf():
             text += "\n"
             [g.close() for g in (textpage, page)]
         pdf.close()
-        with open(f"{title}.txt","w",encoding='utf-8') as f:
+        with open(f"{title}pdf.txt","w",encoding='utf-8') as f:
             f.write(text)
-        text_file=(f"{title}.txt")
+        text_file=(f"{title}pdf.txt")
         messagebox.showinfo('INFO',f'Your File has been saved at location: {os.path.abspath(text_file)}') 
+        op.destroy()
 
     op=Tk()
     op.title("PDF Text Extractor")
     op.geometry('500x500')
     op.resizable(0,0)
-    op.config(bg="#081923",highlightcolor='white', highlightthickness=5)
+    op.config(bg="#4169E1",highlightcolor='white', highlightthickness=5)
 
-    frame1=LabelFrame(op,width=450,height=230,text='DETAILS!!!',bg='#087587',font=("Times New Roman",25,"bold"),highlightcolor='white', highlightthickness=3)
+    frame1=LabelFrame(op,width=450,height=230,text='DETAILS',bg='#00F5FF',font=("Times New Roman",25,"bold"),highlightcolor='white', highlightthickness=3)
     frame1.place(x=20,y=20)
 
     label_title=Label(frame1,text='Title',width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=2)
@@ -86,21 +87,19 @@ def open_pdf():
     display_nop.place(x=190,y=140)
 
 
-    frame2=LabelFrame(op,width=450,height=210,text='Extract Text',bg='#087587',font=("Times New Roman",25,"bold"),highlightcolor='white', highlightthickness=3)
+    frame2=LabelFrame(op,width=450,height=210,text='Extract Text',bg='#00F5FF',font=("Times New Roman",25,"bold"),highlightcolor='white', highlightthickness=3)
     frame2.place(x=20,y=260)
 
-    label_nop=Label(frame2,text='No. of pages',font=('sans-serif',16),width=11,bg='black',fg='white',highlightcolor='white', highlightthickness=2)
+    label_nop=Label(frame2,text='Select No. of pages',font=('sans-serif',12),width=17,bg='black',fg='white',highlightcolor='white', highlightthickness=2)
     label_nop.place(x=30,y=30)
 
     var = IntVar()
     var.set(number_of_pages)
     entry_nop=Spinbox(frame2,textvariable=var,from_=1,to=number_of_pages,font=('sans-serif',16),width=15,bg='black',fg='white',highlightcolor='white', highlightthickness=2)
     entry_nop.place(x=200,y=30)
-    done=Button(frame2,text="Start Extraction",font=("Times New Roman",18,"bold"),fg='white',width=20,height=2,bd=2,bg='black',highlightcolor='white',highlightthickness=5,cursor='hand2',command=lambda: extract_file())
+    done=Button(frame2,text="Start Extraction",font=("Times New Roman",18,"bold"),fg='white',width=20,height=2,bd=2,bg='#8B7D7B',highlightcolor='white',highlightthickness=5,cursor='hand2',command=lambda: extract_file())
     done.place(x=70,y=70)
     extp=int(entry_nop.get())
-
-    op.mainloop()
 
 def open_image():
     file =askopenfile(parent=te, mode='rb', filetype=[("Image file", "*.png *.jpeg *jpg")]) 
@@ -113,18 +112,19 @@ def open_image():
     def extract_image():
         #Extract text from image
         text = pytesseract.image_to_string(img)
-        with open(f"{img.width}.txt","w",encoding='utf-8') as f:
+        with open(f"{img.width}image.txt","w",encoding='utf-8') as f:
             f.write(text)
-        text_file=(f"{img.width}.txt")
+        text_file=(f"{img.width}image.txt")
         messagebox.showinfo('INFO',f'Your File has been saved at location: {os.path.abspath(text_file)}\nPlease note down the location of your file') 
+        oi.destroy()
 
     oi=Tk()
     oi.title("IMAGE Text Extractor")
     oi.geometry('500x500')
     oi.resizable(0,0)
-    oi.config(bg="#081923",highlightcolor='white', highlightthickness=5)
+    oi.config(bg="#4169E1",highlightcolor='white', highlightthickness=5)
 
-    frame1=LabelFrame(oi,width=450,height=450,text='DETAILS!!!',bg='#087587',font=("Times New Roman",25,"bold"),highlightcolor='white', highlightthickness=3)
+    frame1=LabelFrame(oi,width=450,height=450,text='DETAILS',bg='#00F5FF',font=("Times New Roman",25,"bold"),highlightcolor='white', highlightthickness=3)
     frame1.place(x=20,y=20)
 
     label_size=Label(frame1,text='Size',font=("Times New Roman",10,"bold"),width=20,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=2)
@@ -152,8 +152,7 @@ def open_image():
     display_mode=Label(frame1,text=img.mode,font=("Times New Roman",10,"bold"),width=25,height=2,bg='black',fg='white',highlightcolor='white', highlightthickness=2)
     display_mode.place(x=200,y=240)
 
-    done=Button(frame1,text="Start Extraction",font=("Times New Roman",18,"bold"),fg='white',width=20,height=2,bd=2,bg='black',highlightcolor='white',highlightthickness=3,cursor='hand2',command=lambda: extract_image())
+    done=Button(frame1,text="Start Extraction",font=("Times New Roman",18,"bold"),fg='white',width=20,height=2,bd=2,bg='#8B7D7B',highlightcolor='white',highlightthickness=3,cursor='hand2',command=lambda: extract_image())
     done.place(x=70,y=300)
-    oi.mainloop()
 
 te.mainloop()
