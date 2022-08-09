@@ -1,3 +1,4 @@
+#pip install plyer
 import time
 from plyer import notification
 

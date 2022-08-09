@@ -1,4 +1,8 @@
-# install pillow,pypdf,pypdfium2,pytesseract
+#Pre-install following modules
+#pip install pillow
+#pip install pypdf
+#pip install pypdfium2
+#pip install pytesseract
 from tkinter import messagebox
 from tkinter.filedialog import askopenfile
 import os
@@ -9,6 +13,7 @@ from pytesseract import pytesseract
 from tkinter import *
 
 te=Tk()
+te.iconbitmap(default='8_Text Extractor.png') 
 te.title("Text Extractor")
 te.geometry('500x500')
 te.resizable(0,0)
@@ -18,11 +23,11 @@ frame=LabelFrame(te,width=450,height=450,text='TEXT EXTRACTOR',bg='#00F5FF',font
 frame.place(x=20,y=20)
 message=Label(frame,width=46,font=("Times New Roman",12,"bold"),text='Welcome to Text Extractor Tool...\nThe Text extractor will allow you to extract text from any\nPDF  /  IMAGE  /  WEBSITE\nYou may upload any document(.pdf,.png) or Site address \nand the tool will pull text from the image \nand will save it in a text file :)',highlightcolor='black')
 message.place(x=11,y=35)
-browse=Button(frame,text='CLICK TO SELECT  PDF',font=("Latin",12,"bold"),width=23,height=1,bd=2,fg='white',bg='#8B7D7B',activebackground='pink',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: open_pdf())
+browse=Button(frame,text='CLICK TO SELECT  PDF',font=("Latin",12,"bold"),width=23,height=1,bd=2,fg='white',bg='black',activebackground='pink',activeforeground='red',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: open_pdf())
 browse.place(x=95,y=180)
-browse=Button(frame,text='CLICK TO SELECT  IMAGE',font=("Latin",12,"bold"),width=23,height=1,bd=2,fg='white',bg='#8B7D7B',activebackground='pink',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: open_image())
+browse=Button(frame,text='CLICK TO SELECT  IMAGE',font=("Latin",12,"bold"),width=23,height=1,bd=2,fg='white',bg='black',activebackground='pink',activeforeground='red',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: open_image())
 browse.place(x=95,y=240)
-browse=Button(frame,text='CLICK TO EXIT',font=("Latin",12,"bold"),width=23,height=1,bd=2,fg='white',bg='#8B7D7B',activebackground='pink',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: te.destroy())
+browse=Button(frame,text='CLICK TO EXIT',font=("Latin",12,"bold"),width=23,height=1,bd=2,fg='white',bg='black',activebackground='pink',activeforeground='red',highlightbackground='black', highlightcolor='white', highlightthickness=3,cursor='hand2',command=lambda: te.destroy())
 browse.place(x=95,y=300)
 def open_pdf():
     file = askopenfile(parent=te, mode='rb', filetype=[("Pdf file", "*.pdf")])
@@ -156,3 +161,4 @@ def open_image():
     done.place(x=70,y=300)
 
 te.mainloop()
+
