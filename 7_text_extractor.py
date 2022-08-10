@@ -13,7 +13,6 @@ from pytesseract import pytesseract
 from tkinter import *
 
 te=Tk()
-te.iconbitmap(default='8_Text Extractor.png') 
 te.title("Text Extractor")
 te.geometry('500x500')
 te.resizable(0,0)
